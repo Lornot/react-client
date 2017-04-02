@@ -22,6 +22,7 @@
     "babelify": "^7.3.0",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
+    "reflux": "^6.4.1",
     "watchify": "^3.8.0",
     "whatwg-fetch": "^2.0.3"
   }
