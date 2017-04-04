@@ -5,14 +5,27 @@ var Actions = require('./actions.jsx');
 var IngredientStore = Reflux.createStore({
     listenable: [Actions],
     getIngredients: function() {
-
-        this.fireUpdate();
+        console.log('get_ingredients');
+        HTTP.get('/ingredients')
+        .then(function(json) {
+            this.ingredients = json;
+            console.log("DA TA: ", json);
+            this.fireUpdate();
+        }.bind(this));
     },
-    postIngredients: function(text) {
-        // Posted ingredient to the server
-        // now we got a successful callback
-
-        this.fireUpdate();
+    postIngredient: function(text) {
+        if (!this.ingredients){
+            this.ingredients = [];
+        }
+        var ingredient = {
+            "text": text,
+            "id": Math.floor(Date.now() / 1000 ) + text
+        };
+        this.ingredients.push(ingredient);
+        HTTP.post('/ingredients', ingredient)
+        .then(function(response) {
+           this.getIngredients();
+        }.bind(this));
     },
     // Refresh function
     fireUpdate: function() {
